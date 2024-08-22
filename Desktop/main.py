@@ -1,6 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
+
 from database import DatabaseConnect
 from server import ServerConnect
+
 # QtDesigner sahifalarini import qilish
 from ui_pyfiles.main import Ui_MainWindow as Ui_MainWindow
 from ui_pyfiles.edit import Ui_Frame as Ui_EditFrame
@@ -14,9 +17,9 @@ database = DatabaseConnect()
 # Serverga bog'lanish
 server = ServerConnect()
 
-import sys
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
+
 ui = Ui_MainWindow()
 ui.setupUi(MainWindow)
 
@@ -69,13 +72,15 @@ def get_login_code():
     username = login_ui.lineEdit.text().strip()
     password = login_ui.lineEdit_2.text().strip()
     print(server.get_login(username, password))
+
 # Login funksiyasi
 def login_func():
     username = login_ui.lineEdit.text().strip()
     password = login_ui.lineEdit_2.text().strip()
     kod = login_ui.lineEdit_3.text().strip()
     try:
-        server.login(username, password, int(kod))
+        token = server.login(username, password, int(kod))["token"]
+        
         LoginFrame.close()
         MainWindow.show()
     except:
@@ -91,7 +96,7 @@ login_ui.pushButton.clicked.connect(login_func)
 
 
 if __name__ == "__main__":
-    if not database.isLogined():
+    if database.isLogined():
         MainWindow.showMaximized()
     else:
         LoginFrame.show()

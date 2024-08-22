@@ -26,6 +26,8 @@ class ServerConnect(object):
 		  "password": password,
 		  "code": kod
 		})
+	def about_user(self, token):
+		pass
 # server = ServerConnect()
 # username = input("username: ").strip()
 # password = input("password: ").strip()
