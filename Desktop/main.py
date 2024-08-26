@@ -71,7 +71,15 @@ ui.admins_button.clicked.connect(show_data_page)
 def get_login_code():
     username = login_ui.lineEdit.text().strip()
     password = login_ui.lineEdit_2.text().strip()
-    print(server.get_login(username, password))
+    try:
+        server.get_login(username, password)
+    except:
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setText("Username yoki parol xato")
+        msg.setInformativeText("ProjectsPlatforms.uz saytidan ruyxatdan o'tgan akkountingizga kirishingiz kerak.")
+        msg.setWindowTitle("Xatolik!")
+        msg.exec_()
 
 # Login funksiyasi
 def login_func():
@@ -80,11 +88,16 @@ def login_func():
     kod = login_ui.lineEdit_3.text().strip()
     try:
         token = server.login(username, password, int(kod))["token"]
-        
+
         LoginFrame.close()
         MainWindow.show()
     except:
-        pass
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setText("Kod xato kiritildi")
+        msg.setInformativeText("Telegram botdan kelgan 6 belgili kodni kiritishingiz kerak")
+        msg.setWindowTitle("Xatolik!")
+        msg.exec_()
 
 # tugmalarga ulash
 login_ui.pushButton_2.clicked.connect(get_login_code)
