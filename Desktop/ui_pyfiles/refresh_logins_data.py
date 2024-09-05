@@ -15,6 +15,9 @@ class Ui_Frame(object):
     def setupUi(self, Frame):
         Frame.setObjectName("Frame")
         Frame.resize(733, 371)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("icons/main-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Frame.setWindowIcon(icon)
         Frame.setStyleSheet("font-size: 20px;\n"
 "background-color: rgb(27, 29, 36);\n"
 "color: white;\n"

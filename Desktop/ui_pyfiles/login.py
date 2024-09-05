@@ -17,6 +17,9 @@ class Ui_Frame(object):
         Frame.resize(500, 500)
         Frame.setMinimumSize(QtCore.QSize(500, 500))
         Frame.setMaximumSize(QtCore.QSize(500, 500))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("icons/main-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Frame.setWindowIcon(icon)
         Frame.setStyleSheet("\n"
 "background-color: rgb(27, 29, 36);\n"
 "color: white;\n"
