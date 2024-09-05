@@ -160,14 +160,26 @@ def AsosiyMenyuniOchish():
                     ui.label_31.setText(f"{(time_size.seconds//60)%60} minut")
                     ui.label_27.setText(f"{(time_size.seconds//60)%60} minut")
                 else:
-                    ui.label_31.setText(f"{time_size.seconds//3600} soat {(time_size.seconds//60)%60} minut")
-                    ui.label_27.setText(f"{time_size.seconds//3600} soat {(time_size.seconds//60)%60} minut")
+                    if (time_size.seconds//60)%60 == 0:
+                        matn = f"{time_size.seconds//3600} soat"
+                    else:
+                        matn = f"{time_size.seconds//3600} soat {(time_size.seconds//60)%60} minut"
+                    ui.label_31.setText(matn)
+                    ui.label_27.setText(matn)
             else:
-                ui.label_31.setText(f"{time_size.days%30} kun {(time_size.seconds//3600)%24} soat")
-                ui.label_27.setText(f"{time_size.days%30} kun {(time_size.seconds//3600)%24} soat")
+                if (time_size.seconds//3600)%24 == 0:
+                    matn = f"{time_size.days%30} kun"
+                else:
+                    matn = f"{time_size.days%30} kun {(time_size.seconds//3600)%24} soat"
+                ui.label_31.setText(matn)
+                ui.label_27.setText(matn)
         else:
-            ui.label_31.setText(f"{time_size.days//30} oy {time_size.days%30} kun")
-            ui.label_27.setText(f"{time_size.days//30} oy {time_size.days%30} kun")
+            if time_size.days%30 == 0:
+                matn = f"{time_size.days//30} oy"
+            else:
+                matn = f"{time_size.days//30} oy {time_size.days%30} kun"
+            ui.label_31.setText(matn)
+            ui.label_27.setText(matn)
 
 
     report_mal = database.get_4_day()
