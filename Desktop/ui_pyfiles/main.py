@@ -461,6 +461,7 @@ class Ui_MainWindow(object):
         self.lineEdit_5.setSizePolicy(sizePolicy)
         self.lineEdit_5.setMinimumSize(QtCore.QSize(0, 50))
         self.lineEdit_5.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.lineEdit_5.setFocusPolicy(QtCore.Qt.NoFocus)
         self.lineEdit_5.setStyleSheet("border-radius: 0")
         self.lineEdit_5.setInputMethodHints(QtCore.Qt.ImhNone)
         self.lineEdit_5.setAlignment(QtCore.Qt.AlignCenter)

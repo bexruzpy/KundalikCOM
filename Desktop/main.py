@@ -9,6 +9,7 @@
 
 
 import sys
+import pyperclip
 sys.stdout.reconfigure(encoding='utf-8')
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QRunnable, pyqtSignal, QObject
@@ -24,6 +25,7 @@ from ui_pyfiles.edit import Ui_Frame as Ui_EditFrame
 from ui_pyfiles.login import Ui_Frame as Ui_LoginFrame
 from ui_pyfiles.refresh_logins_data import Ui_Frame as Ui_KundalikRefreshFrame
 from ui_pyfiles.kundalik_login import Ui_Frame as Ui_KundalikLoginFrame
+from ui_pyfiles.buy_dialog import Ui_Frame as Ui_BuyDialogFrame
 from functools import partial
 from threading import Thread
 import webbrowser
@@ -88,6 +90,13 @@ login_ui = Ui_LoginFrame()
 login_ui.setupUi(LoginFrame)
 # LoginFrame.show()
 
+BuyDialogFrame = QtWidgets.QDialog()
+BuyDialogFrame.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+
+buy_dialog_ui = Ui_BuyDialogFrame()
+buy_dialog_ui.setupUi(BuyDialogFrame)
+# BuyDialogFrame.show()
+
 
 # Taxrirlash icon
 icon4 = QtGui.QIcon()
@@ -107,6 +116,14 @@ icon4.addPixmap(QtGui.QPixmap("icons/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon
 
 def AsosiyMenyuniOchish():
     profile_data = database.get_profile()
+    if profile_data["sex"]:
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("icons/man.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        ui.hisob_button.setIcon(icon1)
+    else:
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("icons/woman.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        ui.hisob_button.setIcon(icon1)
     ui.maktab_nomi.setText(data["maktab_nomi"])
     ui.lineEdit.setText(profile_data["full_name"])
     ui.lineEdit_2.setText(profile_data["username"])
@@ -115,7 +132,11 @@ def AsosiyMenyuniOchish():
     end_date = datetime.strptime(mal["end_active_date"], "%Y-%m-%dT%H:%M:%S.%f")
     ui.label_33.setText(f"{end_date.day}.{end_date.month}.{end_date.year}")
     ui.label_26.setText(f"{end_date.day}.{end_date.month}.{end_date.year}")
+
     if mal["size"] <= 0:
+        ui.stackedWidget.setCurrentIndex(1)
+        ui.pushButton_6.setEnabled(False)
+        ui.admins_button.setEnabled(False)
         msg = QtWidgets.QMessageBox(MainWindow)
         msg.setStyleSheet("padding: 4px; font-size: 20px;")
         msg.setText("Sizda Linsenziya vaqti tugagan")
@@ -129,6 +150,8 @@ def AsosiyMenyuniOchish():
         ui.label_31.setText("Tugagan")
         ui.label_27.setText("Tugagan")
     else:
+        ui.pushButton_6.setEnabled(True)
+        ui.admins_button.setEnabled(True)
         time_size = timedelta(seconds=mal["size"])
 
         if time_size.days//30 == 0:
@@ -231,6 +254,8 @@ def AsosiyMenyuniOchish():
     ui.label_13.setText(report_mal["day_3"]["date"].replace("-","."))
     ui.label_50.setText(report_mal["day_4"]["date"].replace("-","."))
     price_1, price_2 = server.get_pc_price()
+    print(price_1)
+    print(type(price_2))
     ui.textBrowser.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
     "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
     "p, li { white-space: pre-wrap; }\n"
@@ -242,8 +267,8 @@ def AsosiyMenyuniOchish():
     "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:24pt; font-weight:600;\">-) Login parollarni online kiritish</span></p>\n"
     "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-style:italic; color:#6c6c6c;\">  o\'quvchilardan login va parollarini bitta bitta yozib olmasdan bitta elon orqali elekron tarzda login parollarni yig\'ish eko tizimi.</span></p>\n"
     "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:24pt; font-weight:600;\"><br /></p>\n"
-    f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt;\">Bir oylik letsenziya: </span><span style=\" font-size:20pt; font-weight:600; color:#ff8000;\">{price_1}</span><span style=\" font-size:20pt;\"> </span><span style=\" font-size:20pt; color:#0189ff;\">so\'m</span></p>\n"
-    f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt;\">3 oy yoki undan ko'proq harid qilinsa bir oylik: </span><span style=\" font-size:20pt; font-weight:600; color:#ff0000;\">20%</span><span style=\" font-size:20pt;\"> chegirma bilan </span><span style=\" font-size:20pt; font-weight:600; color:#00ff00;\">{price_2}</span><span style=\" font-size:20pt;\"> </span><span style=\" font-size:20pt; color:#0073ff;\">so\'m</span></p></body></html>")
+    f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt;\">Bir oylik letsenziya: </span><span style=\" font-size:20pt; font-weight:600; color:#ff8000;\">{'{:,}'.format(price_1)}</span><span style=\" font-size:20pt;\"> </span><span style=\" font-size:20pt; color:#0189ff;\">so\'m</span></p>\n"
+    f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt;\">3 oy yoki undan ko'proq harid qilinsa bir oylik: </span><span style=\" font-size:20pt; font-weight:600; color:#ff0000;\">20%</span><span style=\" font-size:20pt;\"> chegirma bilan </span><span style=\" font-size:20pt; font-weight:600; color:#00ff00;\">{'{:,}'.format(price_2)}</span><span style=\" font-size:20pt;\"> </span><span style=\" font-size:20pt; color:#0073ff;\">so\'m</span><span style=\" font-size:20pt;\"> dan</span></p></body></html>")
     hisoblar_soni = database.get_len_logins()
     ui.label_14.setText(f"Jami: {hisoblar_soni} ta")
     ui.label_23.setText(f"Jami: {hisoblar_soni} ta")
@@ -751,31 +776,6 @@ def del_one():
         msg.exec_()
 
 
-def get_price():
-    try:
-        num = int(ui.lineEdit_5.text())
-    except:
-        num = 0
-    if num < 0:
-        num = 0
-    try:
-        if num == 0:
-            ui.label_21.setText(f"0 so'm")
-            ui.lineEdit_5.setText("")
-        else:
-            ui.label_21.setText(f"{'{:,}'.format(server.get_pc_months_price(num))} so'm")
-            ui.lineEdit_5.setText(str(num))
-
-    except requests.exceptions.ConnectionError:
-        msg = QtWidgets.QMessageBox(MainWindow)
-        msg.setStyleSheet("border-radius: 5px; padding: 4px; color: blue; font-size: 20px;")
-        msg.setIcon(QtWidgets.QMessageBox.Critical)
-        msg.setText("Internetga ulanmagansiz")
-        msg.setInformativeText("Internetga ulaning")
-        msg.setWindowTitle("Xatolik!")
-        msg.exec_()
-
-
 def edit_page_active(user_id, sex, kimligi, label):
     edit_ui.lineEdit_20.clear()
     edit_ui.lineEdit_19.clear()
@@ -969,9 +969,68 @@ def online_add():
     webbrowser.open(link)
 
 
+class BuyThread(QtCore.QThread):
+    get = QtCore.pyqtSignal(bool, str)
+    def __init__(self, ui, server, database, loading_quit):
+        super().__init__()
+        self.ui = ui
+        self.server = server
+        self.database = database
+        self.loading_quit = loading_quit
+
+    def run(self):
+        try:
+            res = self.server.buy(self.database.get_profile()["token"], int(ui.lineEdit_5.text()))
+            print(res)
+            self.get.emit(res["how"], res["message"])
+        except requests.exceptions.ConnectionError:
+            self.get.emit(False, "Internetga ulanib bo'lmadi")
+        except Exception as e:
+            print(e)
+            self.get.emit(False, "Nimadir xato ketdi keyinroq urinib ko'ring")
+        self.loading_quit()
 def buy_func():
-    # months_count = ui.
-    pass
+    text = ui.lineEdit_5.text()
+    if text == "":
+        text = "0"
+    months = int(text)
+    if months == 0:
+        return
+    loading()
+    narx = int(ui.label_21.text()[:-4].replace(",",""))
+    buy_dialog_ui.textBrowser.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+    "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+    "p, li { white-space: pre-wrap; }\n"
+    "</style></head><body style=\" font-family:\'Mongolian Baiti\'; font-size:30px; font-weight:400; font-style:normal;\">\n"
+    f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:28pt;\">Miqdor: </span><span style=\" font-size:28pt; font-weight:600; color:#55ffff;\">{months} oy</span></p>\n"
+    +("<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:28pt;\">Chegirma: </span><span style=\" font-size:28pt; font-weight:600; color:#ff0000;\">-20%</span></p>\n" if months >= 3 else "")
+    +f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:28pt;\">Umumiy narx: </span><span style=\" font-size:28pt; font-weight:600; color:#00ff80;\">{narx}</span><span style=\" font-size:28pt; font-weight:600;\"> so\'m</span></p></body></html>")
+    BuyDialogFrame.exec_()
+
+def buy_active():
+    BuyDialogFrame.close()
+    ui.buy.start()
+def buy_how(how: bool, message: str):
+    if how:
+        msg = QtWidgets.QMessageBox(MainWindow)
+        msg.setStyleSheet("border-radius: 5px; color: blue; font-size: 24px;")
+        icon = QtGui.QPixmap("icons/active.png")
+        msg.setIconPixmap(icon.scaled(32, 32, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+        msg.setText(message)
+        msg.setWindowTitle("To'lov!")
+        msg.exec_()
+        AsosiyMenyuniOchish()
+    else:
+        msg = QtWidgets.QMessageBox(MainWindow)
+        msg.setStyleSheet("border-radius: 5px; color: blue; font-size: 24px;")
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setText("To'lov amalga oshirilmadi")
+        msg.setInformativeText(message)
+        msg.setWindowTitle("To'lov!")
+        msg.exec_()
+
+def copy_inputs(lineEdit):
+    pyperclip.copy(lineEdit.text())
 
 #####################################################################################################################
 
@@ -997,6 +1056,8 @@ refresh_kundalik_ui.pushButton.clicked.connect(refresh_maktabni_tugatish_func)
 kundalik_login_ui.pushButton.clicked.connect(kundalik_login_func)
 
 ui.pushButton_9.clicked.connect(KundalikLoginFrame.exec_)
+
+ui.pushButton_10.clicked.connect(buy_func)
 
 ui.pushButton_3.clicked.connect(get_data_serach)
 ui.pushButton_15.clicked.connect(all_data_refresh_maktab)
@@ -1041,13 +1102,21 @@ login_ui.lineEdit_3.returnPressed.connect(login_func)
 kundalik_login_ui.lineEdit.returnPressed.connect(kundalik_login_ui.lineEdit_2.setFocus)
 kundalik_login_ui.lineEdit_2.returnPressed.connect(kundalik_login_func)
 ui.lineEdit_4.returnPressed.connect(get_data_serach)
-ui.lineEdit_5.returnPressed.connect(get_price)
+
+buy_dialog_ui.pushButton_2.clicked.connect(BuyDialogFrame.close)
+buy_dialog_ui.pushButton_2.clicked.connect(loading_quit)
+
+ui.buy = BuyThread(ui, server, database, loading_quit)
+ui.buy.get.connect(buy_how)
+
+buy_dialog_ui.pushButton.clicked.connect(buy_active)
+
+edit_ui.copy_phone_9.clicked.connect(partial(copy_inputs, edit_ui.lineEdit_21))
+edit_ui.copy_phone_12.clicked.connect(partial(copy_inputs, edit_ui.lineEdit_20))
+edit_ui.copy_phone_11.clicked.connect(partial(copy_inputs, edit_ui.lineEdit_19))
 
 
-# O'chirib tashlash shart #
-kundalik_login_ui.lineEdit.setText("shamsiddinova.f02198")
-kundalik_login_ui.lineEdit_2.setText("1985Feruza")
-# # # # # # # # # # # # # #
+
 
 
 
@@ -1066,7 +1135,7 @@ kundalik_login_ui.lineEdit_2.setText("1985Feruza")
 if __name__ == "__main__":
     if database.isLogined():
         if database.isLoginedKundalik():
-            if True:
+            try:
                 kundalik_data = database.get_kundalik_profile()
                 how, data = database.login_kundalik(kundalik_data["login"], kundalik_data["parol"])
                 if how:
@@ -1080,7 +1149,6 @@ if __name__ == "__main__":
                     msg.setWindowTitle("Xatolik!")
                     msg.exec_()
                 elif data:
-                    print("oh")
                     KundalikLoginFrame.show()
                 else:
                     msg = QtWidgets.QMessageBox(MainWindow)
@@ -1089,17 +1157,17 @@ if __name__ == "__main__":
                     msg.setInformativeText("Internetga ulaning")
                     msg.setWindowTitle("Xatolik!")
                     msg.exec_()
-            # except requests.exceptions.ConnectionError as e:
-            #     msg = QtWidgets.QMessageBox(MainWindow)
-            #     msg.setStyleSheet("padding: 4px; font-size: 20px;")
-            #     msg.setIcon(QtWidgets.QMessageBox.Critical)
-            #     msg.setText("Internetga ulanmagansiz")
-            #     msg.setInformativeText("Internetga ulaning")
-            #     msg.setWindowTitle("Xatolik!")
-            #     msg.exec_()
-            # except Exception as e:
-            #     print(type(e))
-            #     LoginFrame.show()
+            except requests.exceptions.ConnectionError as e:
+                msg = QtWidgets.QMessageBox(MainWindow)
+                msg.setStyleSheet("padding: 4px; font-size: 20px;")
+                msg.setIcon(QtWidgets.QMessageBox.Critical)
+                msg.setText("Internetga ulanmagansiz")
+                msg.setInformativeText("Internetga ulaning")
+                msg.setWindowTitle("Xatolik!")
+                msg.exec_()
+            except Exception as e:
+                print(type(e))
+                LoginFrame.show()
         else:
             KundalikLoginFrame.show()
     else:

@@ -36,8 +36,7 @@ def call_foiz(a,b):
 def get_users(browser, school_id, ui, database, login, parol):
     ui.pushButton.setEnabled(False)
     database.is_get_users_thread = True
-    # Qaytariluvchi o'zgaruvchini yaratish
-    natija = database.dict_data["all_data_logins"]
+    natija = dict()
     res = browser.get(f"https://schools.emaktab.uz/v2/school?school={school_id}&view=members&group=students")
     soup = BeautifulSoup(res.content, "html.parser")
     number_pupils = int(soup.find(class_="found").find("strong").get_text().strip())
@@ -50,7 +49,6 @@ def get_users(browser, school_id, ui, database, login, parol):
 
     end = -1
     all_classes = get_all_group(browser, school_id, set_users=True)
-    """
     # O'quvchilarni topib chiqish
     for num in range(1, number_pupils//10+2):
         res = browser.get(f"https://schools.emaktab.uz/v2/school?school={school_id}&view=members&group=students&page={num}")
@@ -79,10 +77,10 @@ def get_users(browser, school_id, ui, database, login, parol):
                 if value>end:
                     ui.label_3.setText(f"{value}%")
                     end = value
-                    ui.label_3.setStyleSheet(f""
+                    ui.label_3.setStyleSheet(f"""
                         background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(219, 255, 0, 255), stop:{scroll} rgba(0, 255, 50, 255), stop:{scroll}1 rgba(196, 196, 196, 30));
                         color: rgb(0,20, 55);
-                        font: 30px "Showcard Gothic";"")
+                        font: 30px "Showcard Gothic";""")
             except:
                 pass
 
@@ -124,13 +122,12 @@ def get_users(browser, school_id, ui, database, login, parol):
                 if value>end:
                     ui.label_3.setText(f"{value}%")
                     end = value
-                    ui.label_3.setStyleSheet(f""
+                    ui.label_3.setStyleSheet(f"""
                         background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(219, 255, 0, 255), stop:{scroll} rgba(0, 255, 50, 255), stop:{scroll}1 rgba(196, 196, 196, 30));
                         color: rgb(0,20, 55);
-                        font: 30px "Showcard Gothic";"")
+                        font: 30px "Showcard Gothic";""")
             except:
                 pass
-    """
     for i in database.dict_data["all_data_logins"].keys():
         if i in natija:
             natija[i]["login"] = database.dict_data["all_data_logins"][i]["login"]
@@ -183,7 +180,7 @@ def get_users(browser, school_id, ui, database, login, parol):
         }""")
 
     ui.label_3.setText("100%")
-    # end = value
+    end = value
     ui.label_3.setStyleSheet(f"""
         background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(219, 255, 0, 255), stop:1.0 rgba(0, 255, 50, 255));
         color: rgb(0,20, 55);

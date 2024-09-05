@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Maktab ma'lumotlari yuklanmoqda</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icons/main-icon.png</normaloff>icons/main-icon.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">font-size: 20px;
 background-color: rgb(27, 29, 36);

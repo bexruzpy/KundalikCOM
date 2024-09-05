@@ -37,7 +37,7 @@ class DatabaseConnect(object):
         self.day_3 = self.dict_data["profile_kundalikcom"]["mal"]["day_3"]
         self.day_4 = self.dict_data["profile_kundalikcom"]["mal"]["day_4"]
     def login_kundalik(self, login, password):
-        if True:
+        try:
             res = self.browser.get("https://emaktab.uz")
             soup = BeautifulSoup(res.content, "html.parser")
             how = True
@@ -65,10 +65,10 @@ class DatabaseConnect(object):
             else:
                 text = soup.find_all(class_="message")[0].get_text().strip()
                 return False, True
-        # except requests.exceptions.ConnectionError:
-        #     return False, None
-        # except:
-        #     return False, False
+        except requests.exceptions.ConnectionError:
+            return False, None
+        except:
+            return False, False
     # database fileni yangilash funksiyasi
     def refresh(self) -> None:
         with open(self.database_file_name, "wb") as f:
@@ -151,7 +151,7 @@ class DatabaseConnect(object):
             self.dict_data["all_data_logins"][user_id]["parol"] = parol
         self.refresh()
     def login_user(self, user_id):
-        if True:
+        try:
             user = self.get_user(user_id)
             print(user)
             res = user["browser"].get("https://emaktab.uz")
@@ -166,7 +166,7 @@ class DatabaseConnect(object):
                     self.refresh()
                 return how
 
-        else:
+        except:
             return False
 # database = DatabaseConnect()
 # prof = database.get_kundalik_profile().copy()

@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Login va parolni taxrirlash</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icons/main-icon.png</normaloff>icons/main-icon.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">*{
 background-color: rgb(27, 29, 36);

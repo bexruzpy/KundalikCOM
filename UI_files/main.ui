@@ -944,6 +944,9 @@ background-color: rgb(0,50,0,120);
                          <height>50</height>
                         </size>
                        </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
                        <property name="styleSheet">
                         <string notr="true">border-radius: 0</string>
                        </property>
