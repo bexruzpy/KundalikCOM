@@ -14,10 +14,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Frame(object):
     def setupUi(self, Frame):
         Frame.setObjectName("Frame")
-        Frame.resize(500, 300)
+        Frame.resize(500, 480)
         Frame.setMinimumSize(QtCore.QSize(500, 300))
-        Frame.setMaximumSize(QtCore.QSize(500, 300))
-        Frame.setStyleSheet("QFrame{background-color: rgb(255, 255, 255,0.3);}\n"
+        Frame.setMaximumSize(QtCore.QSize(500, 500))
+        Frame.setStyleSheet("QFrame{\n"
+"background-color: rgb(27, 29, 36);\n"
+"color: white;\n"
+"font-family: \"Mongolian Baiti\";\n"
+"}\n"
 "QLabel{\n"
 "font-size: 18px;\n"
 "}\n"
@@ -110,9 +114,55 @@ class Ui_Frame(object):
         self.copy_phone_9.setObjectName("copy_phone_9")
         self.horizontalLayout_31.addWidget(self.copy_phone_9)
         self.verticalLayout_18.addWidget(self.frame_31)
-        self.lineEdit_19 = QtWidgets.QLineEdit(self.frame_42)
-        self.lineEdit_19.setObjectName("lineEdit_19")
-        self.verticalLayout_18.addWidget(self.lineEdit_19)
+        self.lineEdit_21 = QtWidgets.QLineEdit(self.frame_42)
+        self.lineEdit_21.setReadOnly(True)
+        self.lineEdit_21.setObjectName("lineEdit_21")
+        self.verticalLayout_18.addWidget(self.lineEdit_21)
+        self.frame_35 = QtWidgets.QFrame(self.frame_42)
+        self.frame_35.setStyleSheet("background-color: none;")
+        self.frame_35.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_35.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_35.setObjectName("frame_35")
+        self.horizontalLayout_35 = QtWidgets.QHBoxLayout(self.frame_35)
+        self.horizontalLayout_35.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_35.setSpacing(6)
+        self.horizontalLayout_35.setObjectName("horizontalLayout_35")
+        self.label_63 = QtWidgets.QLabel(self.frame_35)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_63.sizePolicy().hasHeightForWidth())
+        self.label_63.setSizePolicy(sizePolicy)
+        self.label_63.setObjectName("label_63")
+        self.horizontalLayout_35.addWidget(self.label_63)
+        self.copy_phone_13 = QtWidgets.QPushButton(self.frame_35)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.copy_phone_13.sizePolicy().hasHeightForWidth())
+        self.copy_phone_13.setSizePolicy(sizePolicy)
+        self.copy_phone_13.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.copy_phone_13.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.copy_phone_13.setStyleSheet("QPushButton{\n"
+"padding: 6px 6px;\n"
+"background-color: rgb(255, 163, 72);\n"
+"}\n"
+"QPushButton:focus{\n"
+"background-color: rgb(163, 255, 72);\n"
+"}\n"
+"")
+        self.copy_phone_13.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("icons/check-active.png"), QtGui.QIcon.Active, QtGui.QIcon.Off)
+        self.copy_phone_13.setIcon(icon1)
+        self.copy_phone_13.setObjectName("copy_phone_13")
+        self.horizontalLayout_35.addWidget(self.copy_phone_13)
+        self.verticalLayout_18.addWidget(self.frame_35)
+        self.lineEdit_23 = QtWidgets.QLineEdit(self.frame_42)
+        self.lineEdit_23.setReadOnly(True)
+        self.lineEdit_23.setObjectName("lineEdit_23")
+        self.verticalLayout_18.addWidget(self.lineEdit_23)
         self.frame_32 = QtWidgets.QFrame(self.frame_42)
         self.frame_32.setStyleSheet("background-color: none;")
         self.frame_32.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -147,19 +197,107 @@ class Ui_Frame(object):
 "}\n"
 "")
         self.copy_phone_10.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        icon1.addPixmap(QtGui.QPixmap("icons/check-active.png"), QtGui.QIcon.Active, QtGui.QIcon.Off)
         self.copy_phone_10.setIcon(icon1)
         self.copy_phone_10.setObjectName("copy_phone_10")
         self.horizontalLayout_32.addWidget(self.copy_phone_10)
         self.verticalLayout_18.addWidget(self.frame_32)
-        self.lineEdit_20 = QtWidgets.QLineEdit(self.frame_42)
-        self.lineEdit_20.setReadOnly(True)
-        self.lineEdit_20.setObjectName("lineEdit_20")
-        self.verticalLayout_18.addWidget(self.lineEdit_20)
+        self.lineEdit_22 = QtWidgets.QLineEdit(self.frame_42)
+        self.lineEdit_22.setReadOnly(True)
+        self.lineEdit_22.setObjectName("lineEdit_22")
+        self.verticalLayout_18.addWidget(self.lineEdit_22)
         self.horizontalLayout_21.addWidget(self.frame_42)
         self.verticalLayout.addWidget(self.frame_41)
+        self.frame_34 = QtWidgets.QFrame(Frame)
+        self.frame_34.setStyleSheet("border-radius: 10px;\n"
+"background-color: none;")
+        self.frame_34.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_34.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_34.setObjectName("frame_34")
+        self.horizontalLayout_34 = QtWidgets.QHBoxLayout(self.frame_34)
+        self.horizontalLayout_34.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_34.setSpacing(6)
+        self.horizontalLayout_34.setObjectName("horizontalLayout_34")
+        self.label_62 = QtWidgets.QLabel(self.frame_34)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_62.sizePolicy().hasHeightForWidth())
+        self.label_62.setSizePolicy(sizePolicy)
+        self.label_62.setObjectName("label_62")
+        self.horizontalLayout_34.addWidget(self.label_62)
+        self.copy_phone_12 = QtWidgets.QPushButton(self.frame_34)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.copy_phone_12.sizePolicy().hasHeightForWidth())
+        self.copy_phone_12.setSizePolicy(sizePolicy)
+        self.copy_phone_12.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.copy_phone_12.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.copy_phone_12.setStyleSheet("QPushButton{\n"
+"padding: 6px 6px;\n"
+"background-color: rgb(255, 163, 72);\n"
+"}\n"
+"QPushButton:focus{\n"
+"background-color: rgb(163, 255, 72);\n"
+"}\n"
+"")
+        self.copy_phone_12.setText("")
+        self.copy_phone_12.setIcon(icon1)
+        self.copy_phone_12.setObjectName("copy_phone_12")
+        self.horizontalLayout_34.addWidget(self.copy_phone_12)
+        self.verticalLayout.addWidget(self.frame_34)
+        self.lineEdit_20 = QtWidgets.QLineEdit(Frame)
+        self.lineEdit_20.setStyleSheet("background-color: rgba(0, 0, 0, 0);\n"
+"border: none;")
+        self.lineEdit_20.setReadOnly(True)
+        self.lineEdit_20.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
+        self.lineEdit_20.setObjectName("lineEdit_20")
+        self.verticalLayout.addWidget(self.lineEdit_20)
+        self.frame_33 = QtWidgets.QFrame(Frame)
+        self.frame_33.setStyleSheet("\n"
+"border-radius: 10px;\n"
+"background-color: none;")
+        self.frame_33.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_33.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_33.setObjectName("frame_33")
+        self.horizontalLayout_33 = QtWidgets.QHBoxLayout(self.frame_33)
+        self.horizontalLayout_33.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_33.setSpacing(6)
+        self.horizontalLayout_33.setObjectName("horizontalLayout_33")
+        self.label_61 = QtWidgets.QLabel(self.frame_33)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_61.sizePolicy().hasHeightForWidth())
+        self.label_61.setSizePolicy(sizePolicy)
+        self.label_61.setObjectName("label_61")
+        self.horizontalLayout_33.addWidget(self.label_61)
+        self.copy_phone_11 = QtWidgets.QPushButton(self.frame_33)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.copy_phone_11.sizePolicy().hasHeightForWidth())
+        self.copy_phone_11.setSizePolicy(sizePolicy)
+        self.copy_phone_11.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.copy_phone_11.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.copy_phone_11.setStyleSheet("QPushButton{\n"
+"padding: 6px 6px;\n"
+"background-color: rgb(255, 163, 72);\n"
+"}\n"
+"QPushButton:focus{\n"
+"background-color: rgb(163, 255, 72);\n"
+"}\n"
+"")
+        self.copy_phone_11.setText("")
+        self.copy_phone_11.setIcon(icon1)
+        self.copy_phone_11.setObjectName("copy_phone_11")
+        self.horizontalLayout_33.addWidget(self.copy_phone_11)
+        self.verticalLayout.addWidget(self.frame_33)
+        self.lineEdit_19 = QtWidgets.QLineEdit(Frame)
+        self.lineEdit_19.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
+        self.lineEdit_19.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
+        self.lineEdit_19.setObjectName("lineEdit_19")
+        self.verticalLayout.addWidget(self.lineEdit_19)
         self.frame_23 = QtWidgets.QFrame(Frame)
         self.frame_23.setStyleSheet("background-color: none;")
         self.frame_23.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -167,27 +305,6 @@ class Ui_Frame(object):
         self.frame_23.setObjectName("frame_23")
         self.horizontalLayout_23 = QtWidgets.QHBoxLayout(self.frame_23)
         self.horizontalLayout_23.setObjectName("horizontalLayout_23")
-        self.pushButton_11 = QtWidgets.QPushButton(self.frame_23)
-        self.pushButton_11.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_11.setStyleSheet("QPushButton{\n"
-"border-radius: 10px;\n"
-"color: red;\n"
-"padding: 10px;\n"
-"font-size: 20px;\n"
-"color: black;\n"
-"border: 2px solid red;\n"
-"color: red;\n"
-"    background-color: rgb(0, 0, 0,0.3);\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton:hover{\n"
-"border-color: none;\n"
-"color: black;\n"
-"background-color:qlineargradient(spread:pad, x1:0, y1:0.227, x2:1, y2:0.739, stop:0 rgba(159, 11, 179, 255), stop:0.394089 rgba(255, 59, 194, 255), stop:1 rgba(255, 5, 0, 255));\n"
-"}")
-        self.pushButton_11.setObjectName("pushButton_11")
-        self.horizontalLayout_23.addWidget(self.pushButton_11)
         self.pushButton_12 = QtWidgets.QPushButton(self.frame_23)
         self.pushButton_12.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_12.setStyleSheet("QPushButton{\n"
@@ -213,11 +330,16 @@ class Ui_Frame(object):
         _translate = QtCore.QCoreApplication.translate
         Frame.setWindowTitle(_translate("Frame", "Frame"))
         self.label_50.setText(_translate("Frame", "Ism familiya"))
+        self.lineEdit_21.setText(_translate("Frame", "Boynazarov Bexruz"))
+        self.label_63.setText(_translate("Frame", "Sinf darajasi"))
+        self.lineEdit_23.setText(_translate("Frame", "2"))
+        self.label_60.setText(_translate("Frame", "Sinfi"))
+        self.lineEdit_22.setText(_translate("Frame", "2 - A"))
+        self.label_62.setText(_translate("Frame", "Login"))
+        self.lineEdit_20.setText(_translate("Frame", "@jhaefjhsefseg"))
+        self.label_61.setText(_translate("Frame", "  Parol"))
         self.lineEdit_19.setText(_translate("Frame", "Kindur"))
-        self.label_60.setText(_translate("Frame", "Login"))
-        self.lineEdit_20.setText(_translate("Frame", "zsegdh"))
-        self.pushButton_11.setText(_translate("Frame", "O\'chirish"))
-        self.pushButton_12.setText(_translate("Frame", "Saqlash"))
+        self.pushButton_12.setText(_translate("Frame", "Parolni saqlash"))
 
 
 if __name__ == "__main__":
