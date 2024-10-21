@@ -10,14 +10,14 @@ class ServerConnect(object):
         # self.asosiy_url = "http://127.0.0.1:8000"
         self.asosiy_url = "https://api.projectsplatform.uz"
     def post_request(self, url: str, data):
-        print(data)
+        # print(data)
         result = requests.post(self.asosiy_url+url,
             headers={
                 'accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             data=json.dumps(data))
-        print(result.text)
+        # print(result.text)
         return result.json()
     # Telegramdan kod olish uchun
     def get_login(self, username, password):
@@ -46,7 +46,12 @@ class ServerConnect(object):
             "school_name": maktab_nomi
             })
         except Exception as e:
-            print(e)
+            # print(e)
+            pass
+    def get_school(self, token: str) -> dict:
+        return self.post_request("/kundalikcom/get_school", {
+            "token": token
+        })
     def get_pc_price(self):
         price_1 = self.post_request("/kundalikcom/price_months", {"months_count": 1})
         price_2 = self.post_request("/kundalikcom/price_months", {"months_count": 10})//10

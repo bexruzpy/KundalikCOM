@@ -10,7 +10,6 @@
 
 import sys
 import pyperclip
-sys.stdout.reconfigure(encoding='utf-8')
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QRunnable, pyqtSignal, QObject
 from bs4 import BeautifulSoup
@@ -124,11 +123,19 @@ def AsosiyMenyuniOchish():
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("icons/woman.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         ui.hisob_button.setIcon(icon1)
-    ui.maktab_nomi.setText(data["maktab_nomi"])
+    data = server.get_school(profile_data["token"])
+    try:
+        ui.maktab_nomi.setText(data["school_name"])
+    except:
+        pass
     ui.lineEdit.setText(profile_data["full_name"])
     ui.lineEdit_2.setText(profile_data["username"])
-    ui.lineEdit_3.setText(str(profile_data["balance"]))
+    user_data = server.about_user(profile_data["token"])
+    ui.lineEdit_3.setText(f"{ user_data['balance']:,} so'm")
     mal = server.check(profile_data["token"])
+    if not mal["how"]:
+        return mal["message"]
+
     end_date = datetime.strptime(mal["end_active_date"], "%Y-%m-%dT%H:%M:%S.%f")
     ui.label_33.setText(f"{end_date.day}.{end_date.month}.{end_date.year}")
     ui.label_26.setText(f"{end_date.day}.{end_date.month}.{end_date.year}")
@@ -140,7 +147,7 @@ def AsosiyMenyuniOchish():
         msg = QtWidgets.QMessageBox(MainWindow)
         msg.setStyleSheet("padding: 4px; font-size: 20px;")
         msg.setText("Sizda Linsenziya vaqti tugagan")
-        msg.setInformativeText("Hisob bo'limidan qayta yuklab olishingiz.")
+        msg.setInformativeText("Hisob bo'limidan letsenziya sotib olishingiz mumkin.")
         msg.setWindowTitle("Xabar")
         msg.exec_()
         ui.label_31.setStyleSheet("color: red")
@@ -153,7 +160,6 @@ def AsosiyMenyuniOchish():
         ui.pushButton_6.setEnabled(True)
         ui.admins_button.setEnabled(True)
         time_size = timedelta(seconds=mal["size"])
-
         if time_size.days//30 == 0:
             if time_size.days%30 == 0:
                 if time_size.seconds//3600 == 0:
@@ -181,6 +187,10 @@ def AsosiyMenyuniOchish():
             ui.label_31.setText(matn)
             ui.label_27.setText(matn)
 
+    MainWindow.showMaximized()
+    if mal["size"] > 0:
+        database.new_logins = mal["all_logins"]
+        ui.login_check.start()
 
     report_mal = database.get_4_day()
     ui.label_15.setText(str(report_mal["day_1"]["foiz"])+"%")
@@ -266,12 +276,19 @@ def AsosiyMenyuniOchish():
     ui.label_13.setText(report_mal["day_3"]["date"].replace("-","."))
     ui.label_50.setText(report_mal["day_4"]["date"].replace("-","."))
     price_1, price_2 = server.get_pc_price()
-    print(price_1)
-    print(type(price_2))
     ui.textBrowser.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
     "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
     "p, li { white-space: pre-wrap; }\n"
     "</style></head><body style=\" font-family:\'Mongolian Baiti\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+    "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:20pt; font-weight:600; color:#00ff00;\">________________________________________________________________</span></p>\n"
+    "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:26pt; font-weight:600; color:#00ff00;\">🎁 Bonus</span></p>\n"
+    "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:26pt; font-weight:600; color:rgba(100,255,255,0.8);\">Ulashing va bepul letsenziyaga ega bo\'ling</span></p>\n"
+    "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; font-weight:600; color:#ffffff;\">Ushbu xizmatimizni boshqalarga ulashing va xizmatimizni har bir sotib olgan foydalanuvchi uchun </span><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; font-weight:600; color:#00ff00;\">1 oylik</span><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; font-weight:600; color:#ffffff;\"> bepul letsenziyani qo\'lga kiriting!</span></p>\n"
+    f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; color:#00ffff; background-color:#333333;\"> Havola: </span><a name=\"text-to-copy\"></a><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; color:#0000ff;\"> </span><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; color:#0000ff;\"> https://t.me/projectsplatformbot?start=</span><a name=\"tg_id\"></a><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; color:#0000ff;\"></span><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; color:#0000ff;\">{profile_data['tg_id']}</span><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; color:rgba(100,255,255,0.8);\"> </span></p>\n"
+    "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:22pt; font-weight:600; color:#00ff00;\">Hoziroq ushbu referal havolangizdan nusxa olib telegram orqali ulashing</span></p>\n"
+    "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif\'; font-size:20pt; font-weight:600; color:#00ff00;\">________________________________________________________________</span></p>\n"
+    "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+    "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:24pt; font-weight:600; color:#ffd500;\"><br /></p>\n"
     "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:24pt; font-weight:600; color:#ffd500;\">KundalikCOM</span><span style=\" font-size:24pt; font-weight:600;\"> </span><span style=\" font-size:24pt; font-weight:600; color:#00ffff;\">Desktop</span></p>\n"
     "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:24pt; font-weight:600;\">-) O\'quvchi va Ota onalar </span></p>\n"
     "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-style:italic; color:#6c6c6c;\">  Barcha eMaktab.uz dagi hisoblarni boshqarish imkoniyati</span></p>\n"
@@ -286,7 +303,34 @@ def AsosiyMenyuniOchish():
     ui.label_23.setText(f"Jami: {hisoblar_soni} ta")
     ui.label_18.setText(f"Jami: {hisoblar_soni} ta")
     ui.label_48.setText(f"Jami: {hisoblar_soni} ta")
-    MainWindow.showMaximized()
+
+# QThread orqali Ma'lumotlarni olish
+class LoginsAddThreadClass(QtCore.QThread):
+    def __init__(self, ui, database, loading, loading_quit):
+        super().__init__()
+        self.ui = ui
+        self.loading = loading
+        self.database = database
+        self.loading_quit = loading_quit
+
+    def run(self):
+        self.loading()
+        i = 0
+        n = len(database.new_logins)
+        loading_label.setText(f"Barcha yangi login parollarni tekshirib chiqish\nBajarildi: 0/{n}")
+        for login in database.new_logins.keys():
+            parol = database.new_logins[login]
+            how, data = kundalikcom_func.login_user(requests.session(), login, parol)
+            loading_label.setGeometry(QtCore.QRect(0, 0, MainWindow.size().width(), MainWindow.size().height()))
+            if how and data["user_id"] in self.database.dict_data["all_data_logins"]:
+                self.database.dict_data["all_data_logins"][data["user_id"]]["browser"] = data["browser"]
+                self.database.dict_data["all_data_logins"][data["user_id"]]["login"] = login
+                self.database.dict_data["all_data_logins"][data["user_id"]]["parol"] = parol
+            i+=1
+            loading_label.setText(f"Barcha yangi login parollarni tekshirib chiqish\n{i}/{n}")
+        if n:
+            self.database.refresh()
+        self.loading_quit()
 
 
 # Asosiy ekranda loading chiqarish
@@ -309,6 +353,7 @@ def show_home_page():
     ui.admins_button.setStyleSheet("")
     ui.hisob_button.setStyleSheet("")
     ui.stackedWidget.setCurrentIndex(1)
+    AsosiyMenyuniOchish()
 
 
 # Profile sahifasiga o'tkazuvchi funksiya
@@ -320,6 +365,7 @@ def show_profile_page():
     ui.admins_button_2.setStyleSheet("")
     ui.admins_button.setStyleSheet("")
     ui.stackedWidget.setCurrentIndex(0)
+    AsosiyMenyuniOchish()
 
 
 # Data sahifasiga o'tkazuvchi funksiya
@@ -414,7 +460,14 @@ def login_func():
 
             if database.isLoginedKundalik():
                 try:
-                    AsosiyMenyuniOchish()
+                    nat = AsosiyMenyuniOchish()
+                    if nat != None:
+                        msg = QtWidgets.QMessageBox(MainWindow)
+                        msg.setStyleSheet("border-radius: 5px; padding: 4px; color: blue; font-size: 20px;")
+                        msg.setText(nat)
+                        msg.setWindowTitle("Xatolik!")
+                        msg.show()
+                        LoginFrame.show()
                 except requests.exceptions.ConnectionError as e:
                     msg = QtWidgets.QMessageBox(MainWindow)
                     msg.setStyleSheet("padding: 4px; font-size: 20px;")
@@ -424,7 +477,7 @@ def login_func():
                     msg.setWindowTitle("Xatolik!")
                     msg.exec_()
                 except Exception as e:
-                    print(type(e))
+                    # print(type(e))
                     LoginFrame.show()
             else:
                 KundalikLoginFrame.show()
@@ -437,7 +490,7 @@ def login_func():
             msg.setWindowTitle("Xatolik!")
             msg.exec_()
         except Exception as e:
-            print(type(e))
+            # print(type(e))
             LoginFrame.show()
     except requests.exceptions.ConnectionError as e:
         msg = QtWidgets.QMessageBox(MainWindow)
@@ -498,9 +551,9 @@ def kundalik_login_func():
         msg = QtWidgets.QMessageBox(MainWindow)
         msg.setIcon(QtWidgets.QMessageBox.Critical)
         msg.setText("Ayni paytda eMaktab.uz sayti ishlamayapti, keyinroq qata urinib kuring. Saytda profilaktika ishlari olib borilayotgan bo'lishi ham mumkin")
-        msg.setInformativeText("Internetga ulaning")
+        msg.setInformativeText("Keyinroq qayta kiring")
         msg.setWindowTitle("Xatolik!")
-        msg.exec_()
+        msg.exec()
 
 
 # Biror grade tanlanganda
@@ -722,7 +775,7 @@ def add_user(data):
 
 
 def get_users_thread_stop(event):
-    print("stop thread")
+    # print("stop thread")
     database.is_get_users_thread = False
 
 
@@ -738,7 +791,7 @@ def get_page(button):
 def all_data_refresh_maktab():
     refresh_kundalik_ui.label.setText(data["maktab_nomi"])
     login, parol = database.get_kundalik_profile()["login"], database.get_kundalik_profile()["parol"]
-    Thread(target=kundalikcom_func.get_users, args=[database.browser, data["maktab_id"], refresh_kundalik_ui, database, login, parol]).start()
+    Thread(target=kundalikcom_func.get_users, args=[database.browser, database.data["maktab_id"], refresh_kundalik_ui, database, login, parol]).start()
     RefreshKundalikFrame.exec_()
 
 
@@ -993,12 +1046,12 @@ class BuyThread(QtCore.QThread):
     def run(self):
         try:
             res = self.server.buy(self.database.get_profile()["token"], int(ui.lineEdit_5.text()))
-            print(res)
+            # print(res)
             self.get.emit(res["how"], res["message"])
         except requests.exceptions.ConnectionError:
             self.get.emit(False, "Internetga ulanib bo'lmadi")
         except Exception as e:
-            print(e)
+            # print(e)
             self.get.emit(False, "Nimadir xato ketdi keyinroq urinib ko'ring")
         self.loading_quit()
 def buy_func():
@@ -1054,6 +1107,8 @@ def copy_inputs(lineEdit):
 
 
 RefreshKundalikFrame.closeEvent = get_users_thread_stop
+
+ui.login_check =  LoginsAddThreadClass(ui, database, loading, loading_quit)
 
 # tugmalarga ulash
 
@@ -1151,7 +1206,14 @@ if __name__ == "__main__":
                 kundalik_data = database.get_kundalik_profile()
                 how, data = database.login_kundalik(kundalik_data["login"], kundalik_data["parol"])
                 if how:
-                    AsosiyMenyuniOchish()
+                    nat = AsosiyMenyuniOchish()
+                    if nat != None:
+                        msg = QtWidgets.QMessageBox(MainWindow)
+                        msg.setStyleSheet("border-radius: 5px; padding: 4px; color: blue; font-size: 20px;")
+                        msg.setText(nat)
+                        msg.setWindowTitle("Xatolik!")
+                        msg.show()
+                        LoginFrame.show()
                 elif data == None:
                     msg = QtWidgets.QMessageBox(MainWindow)
                     msg.setStyleSheet("border-radius: 5px; padding: 4px; color: blue; font-size: 20px;")
@@ -1159,16 +1221,16 @@ if __name__ == "__main__":
                     msg.setText("Internetga ulanmagansiz")
                     msg.setInformativeText("Internetga ulaning")
                     msg.setWindowTitle("Xatolik!")
-                    msg.exec_()
+                    msg.show()
                 elif data:
                     KundalikLoginFrame.show()
                 else:
                     msg = QtWidgets.QMessageBox(MainWindow)
                     msg.setIcon(QtWidgets.QMessageBox.Critical)
                     msg.setText("Ayni paytda eMaktab.uz sayti ishlamayapti, keyinroq qata urinib kuring. Saytda profilaktika ishlari olib borilayotgan bo'lishi ham mumkin")
-                    msg.setInformativeText("Internetga ulaning")
+                    msg.setInformativeText("Keyinroq qayta kiring")
                     msg.setWindowTitle("Xatolik!")
-                    msg.exec_()
+                    msg.show()
             except requests.exceptions.ConnectionError as e:
                 msg = QtWidgets.QMessageBox(MainWindow)
                 msg.setStyleSheet("padding: 4px; font-size: 20px;")
@@ -1176,9 +1238,10 @@ if __name__ == "__main__":
                 msg.setText("Internetga ulanmagansiz")
                 msg.setInformativeText("Internetga ulaning")
                 msg.setWindowTitle("Xatolik!")
-                msg.exec_()
+                msg.show()
             except Exception as e:
                 print(type(e))
+                print(e)
                 LoginFrame.show()
         else:
             KundalikLoginFrame.show()

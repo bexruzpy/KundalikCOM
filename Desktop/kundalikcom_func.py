@@ -72,7 +72,7 @@ def get_users(browser, school_id, ui, database, login, parol):
                 }
                 value, scroll = call_foiz(number_pupils+number_parents+2, len(natija))
                 if database.is_get_users_thread == False:
-                    print("Finish")
+                    # print("Finish")
                     return 0
                 if value>end:
                     ui.label_3.setText(f"{value}%")
@@ -113,11 +113,11 @@ def get_users(browser, school_id, ui, database, login, parol):
                     "sinf": sinf,
                     "browser": requests.session(),
                     "login": None,
-                    "password": None
+                    "parol": None
                 }
                 value, scroll = call_foiz(number_pupils+number_parents+2, len(natija))
                 if database.is_get_users_thread == False:
-                    print("Finish")
+                    # print("Finish")
                     return 0
                 if value>end:
                     ui.label_3.setText(f"{value}%")
@@ -223,6 +223,10 @@ def login_user(browser, login, password):
                                 "user_id": user_id,
                                 "browser": browser
                             }
+                        elif soup.find_all(class_="message")[0].get_text().strip() == "Parol yoki login notoʻgʻri koʻrsatilgan. Qaytadan urinib koʻring.":
+                            return False, "Login yoki parol xato"
+                    except requests.exceptions.ConnectionError:
+                        return False, "Internega ulanib bo'lmadi"
                     except:
                         return False, "Profilaktika"
     except requests.exceptions.ConnectionError:
@@ -264,9 +268,9 @@ def no_parol_users(all_data, loading_quit):
             if "farzand" not in all_data[user_id]:
                 p = doc.add_paragraph(f"{n}) "+all_data[user_id]["full_name"])
             elif all_data[user_id]["sex"] == "male":
-                p = doc.add_paragraph(f"{n}) "+all_data[user_id]["full_name"]+f"\n    >>> {all_data[user_id]["farzand"]} ning otasi")
+                p = doc.add_paragraph(f"{n}) "+all_data[user_id]["full_name"]+f"\n    >>> {all_data[user_id]['farzand']} ning otasi")
             else:
-                p = doc.add_paragraph(f"{n}) "+all_data[user_id]["full_name"]+f"\n    >>> {all_data[user_id]["farzand"]} ning onasi")
+                p = doc.add_paragraph(f"{n}) "+all_data[user_id]["full_name"]+f"\n    >>> {all_data[user_id]['farzand']} ning onasi")
             p_format = p.paragraph_format
             p_format.space_before = 0
             p_format.space_after = 0

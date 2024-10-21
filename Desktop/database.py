@@ -40,12 +40,10 @@ class DatabaseConnect(object):
         try:
             res = self.browser.get("https://emaktab.uz")
             soup = BeautifulSoup(res.content, "html.parser")
-            how = True
-            if "Chiqish" not in soup.get_text():
-                self.browser = requests.session()
-                how, data = kundalikcom_func.login_user(self.browser, login, password)
-                self.browser = data["browser"]
+            self.browser = requests.session()
+            how, data = kundalikcom_func.login_user(self.browser, login, password)
             if how:
+                self.browser = data["browser"]
                 res = self.browser.get("https://schools.emaktab.uz/v2/school")
                 maktab_id = int(res.url.split("school=")[-1])
                 res = self.browser.get(f"https://schools.emaktab.uz/v2/school?school={maktab_id}&view=profile")
@@ -62,12 +60,16 @@ class DatabaseConnect(object):
                 "viloyat": viloyat,
                 "token": self.dict_data["profile"]["token"]
                 }
+            elif data == "Profilaktika":
+                return False, False
+            elif data == "Internega ulanib bo'lmadi":
+                return False, None
             else:
-                text = soup.find_all(class_="message")[0].get_text().strip()
                 return False, True
         except requests.exceptions.ConnectionError:
             return False, None
-        except:
+        except Exception as e:
+            print(e)
             return False, False
     # database fileni yangilash funksiyasi
     def refresh(self) -> None:
@@ -153,11 +155,11 @@ class DatabaseConnect(object):
     def login_user(self, user_id):
         try:
             user = self.get_user(user_id)
-            print(user)
+            # print(user)
             res = user["browser"].get("https://emaktab.uz")
             soup = BeautifulSoup(res.content, "html.parser")
             if "Chiqish" in soup.get_text():
-                print("1 ta")
+                # print("1 ta")
                 return True
             else:
                 how, data = kundalikcom_func.login_user(user["browser"], user["login"], user["parol"])
