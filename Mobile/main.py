@@ -1,93 +1,80 @@
 from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition, FadeTransition
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
+from database import DatabaseConnection
+import requests
+import json
 
-Builder.load_string("""
-<HomeScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: 'Home Screen'
+Builder.load_file("Login.kv")
+Builder.load_file("Home.kv")
+Builder.load_file("Datas.kv")
+Builder.load_file("Let.kv")
 
-<MenuScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: 'Menu Screen'
 
-<ProfileScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: 'Profile Screen'
 
-<MyButton>:
-    canvas.before:
-        Color:
-            rgba: self.background_color if not self.is_pressed else self.pressed_color
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: [self.radius]
+# O'chiriladi
+######################################
+from kivy.core.window import Window
+Window.size = (400, 600)
+######################################
 
-    background_color: 0, 0.5, 0.7, 1  # Tugma fon rangi
-    pressed_color: 1, 0, 0, 1  # Tugma bosilgandagi rang
-    radius: 15  # Tugma radiusi
-
-    on_press:
-        self.is_pressed = True
-    on_release:
-        self.is_pressed = False
-""")
+class LoginScreen(Screen):
+    def get_login_code(self, username, password):
+        res = requests.post("https://api.projectsplatform.uz/accounts/login", json={"username": username, "password": password})
+        print(res.json())
+    def login_func(self, username, password, code):
+        try:
+            res = requests.post("https://api.projectsplatform.uz/accounts/check-login-code", json={"username": username, "password": password, "code": int(code)})
+            app.database.set_data("token", res.json()["token"])
+            app.root.current = "home"
+        except:
+            pass
+    def logout(self):
+        app.database.logout()
+        app.root.current = "login"
 
 class HomeScreen(Screen):
     pass
-
-class MenuScreen(Screen):
+class DatasScreen(Screen):
+    pass
+class LetsenziyaScreen(Screen):
     pass
 
-class ProfileScreen(Screen):
-    pass
 
-class MyButton(Button):
-    is_pressed = False
-    radius = 20
-
-class BottomBar(BoxLayout):
-    def __init__(self, screen_manager, **kwargs):
+class RootWidget(ScreenManager):
+    # Ekranlarni `ScreenManager` ichida yaratish
+    def __init__(self, page_name, **kwargs):
         super().__init__(**kwargs)
-        self.orientation = 'horizontal'
-        self.screen_manager = screen_manager
-        # Home tugmasi
-        self.add_widget(MyButton(text='Home', on_press=self.switch_to_home))
-        # Menu tugmasi
-        self.add_widget(MyButton(text='Menu', on_press=self.switch_to_menu))
-        # Profile tugmasi
-        self.add_widget(MyButton(text='Profile', on_press=self.switch_to_profile))
+        self.LoginPage = LoginScreen(name="login")
+        self.add_widget(self.LoginPage)
+        self.HomePage = HomeScreen(name="home")
+        self.add_widget(self.HomePage)
+        self.LetsenziyaPage = LetsenziyaScreen(name="letsenziya")
+        self.add_widget(self.LetsenziyaPage)
+        self.DatasPage = DatasScreen(name="datas")
+        self.add_widget(self.DatasPage)
+        self.transition.direction = 'up'
+        self.current = page_name
 
-    def switch_to_home(self, instance):
-        self.screen_manager.current = 'home'
-
-    def switch_to_menu(self, instance):
-        self.screen_manager.current = 'menu'
-
-    def switch_to_profile(self, instance):
-        self.screen_manager.current = 'profile'
-
-class MyApp(App):
+class KundalikCOMApp(App):
     def build(self):
-        sm = ScreenManager()
-        sm.add_widget(HomeScreen(name='home'))
-        sm.add_widget(MenuScreen(name='menu'))
-        sm.add_widget(ProfileScreen(name='profile'))
+        self.database = DatabaseConnection()
+        print(self.database.device_id)
+        token = self.database.get_data("token")
+        if token:
+            self.root = RootWidget(page_name="home")
+        else:
+            self.root = RootWidget(page_name="login")
+        return self.root
 
-        root = BoxLayout(orientation='vertical')
-        root.add_widget(sm)
-        root.add_widget(BottomBar(screen_manager=sm, size_hint_y=0.1))
 
-        return root
+    def login(self, username, password, sms_code):
+        # Bu yerda to'liq loginni tasdiqlash funksiyasini qo'shishingiz mumkin
+        print(f"Login Button pressed! Username: {username}, Password: {password}, SMS code: {sms_code}")
 
 if __name__ == '__main__':
-    MyApp().run()
+    app = KundalikCOMApp()
+    app.run()
