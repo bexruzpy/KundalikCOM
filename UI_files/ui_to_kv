@@ -1,0 +1,37 @@
+from xml.etree import ElementTree as ET
+
+# Load the .ui file
+ui_file_path = '/mnt/data/Home.ui'
+tree = ET.parse(ui_file_path)
+root = tree.getroot()
+
+# Convert .ui (XML) to .kv
+kv_content = []
+
+def parse_widget(element, depth=0):
+    """Recursively parse each widget element to build a corresponding .kv structure."""
+    indentation = '    ' * depth  # Kivy indentation level
+    widget_class = element.get('class')
+    widget_name = element.get('name')
+    
+    if widget_class and widget_name:
+        kv_content.append(f"{indentation}{widget_name}:")  # Start of the widget block
+        kv_content.append(f"{indentation}    {widget_class}:")  # Widget class
+        for child in element:
+            if child.tag == 'property':
+                name = child.get('name')
+                value = child.text or ''
+                kv_content.append(f"{indentation}        {name}: '{value}'")
+            else:
+                parse_widget(child, depth + 1)
+
+# Begin parsing the XML tree
+for widget in root.findall(".//widget"):
+    parse_widget(widget)
+
+# Save .kv content to a file
+kv_file_path = '/mnt/data/Home.kv'
+with open(kv_file_path, 'w') as kv_file:
+    kv_file.write('\n'.join(kv_content))
+
+kv_file_path

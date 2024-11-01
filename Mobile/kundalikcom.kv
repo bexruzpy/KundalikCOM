@@ -1,0 +1,124 @@
+<MessagePopup>
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    background_color: 0,0,0,0
+    autoauto_dismiss: False
+    BoxLayout:
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        width: root.width-30
+        orientation: "vertical"
+        size_hint: None, None
+        padding: [30,10,30,10]
+        size: min(self.size[0], 500 ), min(self.size[1]+30, 300)
+        pos: max(self.pos[0], root.width/2-250), max(self.pos[1], root.height/2-250)
+        canvas.before:
+            Color:
+                rgba: 0.854, 0.854, 0.854, 1
+            RoundedRectangle:
+                size: min(self.size[0], 500 ), min(self.size[1]+30, 300)
+                pos: max(self.pos[0], root.width/2-250), max(self.pos[1], root.height/2-250)
+                radius: [10]
+        Label:
+            id: title
+            text: "title"
+            font_size: 26
+            height: 50
+            size_hint_y: None
+            canvas.before:
+                Color:
+                    rgba: 0.149, 0.0, 1.0, 0.42
+                RoundedRectangle:
+                    size: self.size[0], self.size[1]
+                    pos: self.pos[0], self.pos[1]
+                    radius: [15]
+
+        Label:
+            id: text
+            text: "Xabar matni!"
+            font_size: 20
+            multiline: True
+            color: 0.149, 0.0, 1.0, 1
+            font_name: "fonts/OpenSans-Light"
+
+        Button:
+            id: tugma
+            text: "yopish"
+            size_hint_x: 0.5
+            size_hint_y: None
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            on_release: root.dismiss()
+            background_color: 0,0,0,0
+            color: 0.0, 0.051, 0.373, 1
+            font_name: "fonts/OpenSans-Bold"
+            height: 50
+            font_name: "fonts/OpenSans-Bold"
+            canvas.before:
+                Color:
+                    rgba: 0.129, 0.114, 0.216, 0.53
+                RoundedRectangle:
+                    size: self.size[0]+4, self.size[1]
+                    pos: self.pos[0]-2, self.pos[1]
+                    radius: [15]
+
+<ErrorPopup>
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    background_color: 0,0,0,0
+    autoauto_dismiss: False
+    BoxLayout:
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        width: root.width-30
+        orientation: "vertical"
+        size_hint: None, None
+        padding: [30,10,30,10]
+        size: min(self.size[0], 500 ), min(self.size[1]+30, 300)
+        pos: max(self.pos[0], root.width/2-250), max(self.pos[1], root.height/2-250)
+        canvas.before:
+            Color:
+                rgba: 0.854, 0.854, 0.854, 1
+            RoundedRectangle:
+                size: min(self.size[0], 500 ), min(self.size[1]+30, 300)
+                pos: max(self.pos[0], root.width/2-250), max(self.pos[1], root.height/2-250)
+                radius: [10]
+        Label:
+            id: title
+            text: "title"
+            font_size: 26
+            height: 50
+            size_hint_y: None
+            canvas.before:
+                Color:
+                    rgba: 1.0, 0.149, 0.0, 0.42
+                RoundedRectangle:
+                    size: self.size[0], self.size[1]
+                    pos: self.pos[0], self.pos[1]
+                    radius: [15]
+
+        Label:
+            id: text
+            text: "Xabar matni!"
+            font_size: 20
+            text_size: self.size
+            valign: "center"
+            size_hint: 1,1
+            color: 1,0.5,0,1
+            color: 0.149, 0.0, 1.0, 1
+            font_name: "fonts/OpenSans-Light"
+
+        Button:
+            id: tugma
+            text: "yopish"
+            size_hint_x: 0.5
+            size_hint_y: None
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            on_release: root.dismiss()
+            background_color: 0,0,0,0
+            color: 0.0, 0.051, 0.373, 1
+            font_name: "fonts/OpenSans-Bold"
+            height: 50
+            font_name: "fonts/OpenSans-Bold"
+            canvas.before:
+                Color:
+                    rgba: 0.129, 0.114, 0.216, 0.53
+                RoundedRectangle:
+                    size: self.size[0]+4, self.size[1]
+                    pos: self.pos[0]-2, self.pos[1]
+                    radius: [15]
