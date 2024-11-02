@@ -1,12 +1,17 @@
-from plyer import uniqueid
+from datetime import datetime, timedelta
 
-device_id = uniqueid.id  # Qurilmaning noyob identifikatori
+def get_last_seven_days():
+    # Hozirgi sanani olish
+    today = datetime.now()
+    # Oxirgi 7 kun uchun ro'yxat
+    last_seven_days = []
 
-# Agar qurilma nomi yoki modeli kerak bo'lsa
-from plyer import device_info
-def get_phone():
-	device_model = device_info.get_info('model')  # Qurilma modeli
-	device_name = device_info.get_info('manufacturer')  # Qurilma ishlab chiqaruvchisi
+    for i in range(7):
+        # Hozirgi sanadan i kun oldingi sanani hisoblash
+        date = today - timedelta(days=i)
+        # Sanani "DD.MM" formatida o'zgartirish
+        formatted_date = date.strftime("%d.%m")
+        last_seven_days.append(formatted_date)
 
-	return f"{device_id};{device_model};{device_name}"
-print(get_phone())
+    return last_seven_days
+# print(get_last_seven_days())

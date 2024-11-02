@@ -59,7 +59,7 @@
                             RoundedRectangle:
                                 pos: self.pos
                                 size: self.size
-                                radius: [0, 20, 0, 30]
+                                radius: [0, 20, 0, 20]
                     Label:
                         text: "Letsenziya tugash vaqti:"
                         font_size: '12sp'
@@ -149,10 +149,10 @@
                         size_hint_x: 1
                         pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         ScrollView:
-                            id: all_page
                             do_scroll_x: False
                             do_scroll_y: True
                             BoxLayout:
+                                id: all_page
                                 orientation: 'vertical'
                                 size_hint_y: None
                                 height: 200
@@ -255,10 +255,10 @@
                         size_hint_x: 1
                         pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         ScrollView:
-                            id: err_page
                             do_scroll_x: False
                             do_scroll_y: True
                             BoxLayout:
+                                id: err_page
                                 orientation: 'vertical'
                                 size_hint_y: None
                                 height: 200
@@ -367,6 +367,7 @@
                     font_name: "fonts/OpenSans-Light"
                     background_color: 0,0,0,0
                     font_size: 40
+                    on_release: root.show_add_page()
                     canvas.before:
                         Color:
                             rgba: 0.1059, 0.1294, 0.2431, 1.0
@@ -386,6 +387,7 @@
                     pos: self.pos
                     size: self.size
             Label:
+                id: all_number
                 text: "Jami: 100 ta"
                 size_hint: 1, 1
                 text_size: self.size
@@ -393,6 +395,7 @@
                 halign: "center"
                 color: 0.0000, 0.0510, 0.3725, 1.0
             Label:
+                id: err_number
                 text: "Paroli xatolar: 100 ta"
                 size_hint: 1, 1
                 text_size: self.size

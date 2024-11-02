@@ -59,7 +59,7 @@
                             RoundedRectangle:
                                 pos: self.pos
                                 size: self.size
-                                radius: [0, 20, 0, 30]
+                                radius: [0, 20, 0, 20]
                     Label:
                         text: "Letsenziya tugash vaqti:"
                         font_size: '12sp'
@@ -213,6 +213,7 @@
                             rounded_rectangle: (self.pos[0], self.pos[1], self.width+40, self.height, 20)
                             width: 1
                     Label:
+                        id: today_foiz
                         text: "100%"
                         color: 1, 0.3490, 0.0000, 1.0
                         font_size: 28
@@ -223,6 +224,7 @@
                         text_size: self.size
                         font_name: "fonts/OpenSans-Bold"
                     Label:
+                        id: today_qism
                         text: "0/35"
                         color: 0.1059, 0.1294, 0.2431, 1.0
                         font_size: 16
@@ -238,7 +240,7 @@
                     font_name: "fonts/OpenSans-Bold"
                     background_color: 0,0,0,0
                     font_size: 24
-                    on_release: root.show_message("Letsenziya", "fefef")
+                    on_release: root.show_message("To'lov amalga oshirildi", "fefef")
                     canvas.before:
                         Color:
                             rgba: 0.1059, 0.1294, 0.2431, 1.0
@@ -302,6 +304,8 @@
                     on_press:
                         root.manager.transition.direction = 'left'
                         root.manager.current = 'datas'
+                        from kivy.clock import Clock
+                        Clock.schedule_once(lambda dt: root.manager.DatasPage.get_datas())
                     Image:
                         source: 'icons/mall.png'
                         size_hint: None, 1

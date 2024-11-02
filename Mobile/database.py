@@ -26,11 +26,13 @@ class DatabaseConnection:
 				id INTEGER PRIMARY KEY,
 				name TEXT NOT NULL,
 				login TEXT NOT NULL UNIQUE,
-				password TEXT NOT NULL
+				password TEXT NOT NULL,
+				holat BOOLEAN NOT NULL,
 			)''')
 		except sqlite3.Error as e:
 			print(f"Error creating logins table: {e}")
-
+	def logins_len(self):
+		return len(self.c.execute('SELECT * FROM logins').fetchall())
 	def get_data(self, key):
 		try:
 			self.c.execute('''SELECT * FROM datas WHERE key = ?''', (key,))
@@ -59,6 +61,7 @@ class DatabaseConnection:
 	def logout(self):
 		try:
 			self.c.execute('''DELETE FROM datas WHERE key = ?''', ("token",))
+			self.db.commit()
 		except:
 			pass
 	
@@ -77,16 +80,25 @@ class DatabaseConnection:
 		result = dict()
 		result_err = dict()
 		for login_data in login_datas:
-			_, name, login, password, holat = login_data
+			_id, name, login, password, holat = login_data
 			if holat:
 				result[login] = {
+					"id": _id,
 					"name": name,
 					"login": login,
 					"password": password,
 					"holat": holat
 				}
 			else:
+				result[login] = {
+					"id": _id,
+					"name": name,
+					"login": login,
+					"password": password,
+					"holat": holat
+				}
 				result_err[login] = {
+					"id": _id,
 					"name": name,
 					"login": login,
 					"password": password,

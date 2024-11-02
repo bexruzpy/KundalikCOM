@@ -59,7 +59,7 @@
                             RoundedRectangle:
                                 pos: self.pos
                                 size: self.size
-                                radius: [0, 20, 0, 30]
+                                radius: [0, 20, 0, 20]
                     Label:
                         text: "Letsenziya tugash vaqti:"
                         font_size: '12sp'
@@ -143,6 +143,8 @@
                     size_hint: 1, 1
                     background_color: 0,0,0,0
                     on_press:
+                        from kivy.clock import Clock
+                        Clock.schedule_once(lambda dt: root.manager.DatasPage.get_datas())
                         root.manager.transition.direction = 'right'
                         root.manager.current = 'datas'
                     Image:
