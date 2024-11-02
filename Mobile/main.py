@@ -328,9 +328,9 @@ class KundalikCOMApp(App):
             res = requests.post("https://api.projectsplatform.uz/kundalikcom/check_mobile", json={"token": self.database.get_data("token"), "device_id": self.database.get_data("device_id")})
             self.letsenziya_data(res.json())
             today = self.database.get_data(datetime.now().strftime('%d.%m'))
-            if self.database.get_data("last") == datetime.now().strftime('%d.%m.%Y'):
-                self.root.HomePage.ids.today_foiz.text = today.split("%")[0]+"%"
-                self.root.HomePage.ids.today_qism.text = today.split("%")[1]
+            if self.database.get_data("last") != datetime.now().strftime('%d.%m.%Y'):
+                self.root.HomePage.ids.today_foiz.text = today.split("|")[1]
+                self.root.HomePage.ids.today_qism.text = f'{int(today.split("|")[2]) - int(today.split("|")[3])}/{today.split("|")[2]}'
             else:
                 self.root.HomePage.ids.today_foiz.text = "0%"
                 self.root.HomePage.ids.today_qism.text = "0/"+str(self.database.logins_len())
