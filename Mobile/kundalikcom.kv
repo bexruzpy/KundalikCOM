@@ -357,7 +357,106 @@
             center_x: self.parent.center_x
             center_y: self.parent.center_y+3
 
+<HomeContent1>
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: 150
+        space: 10
+        canvas.before:
+            Color:
+                rgba: 0.4118, 0.6039, 0.8941, 0.43
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            id: sana_foiz
+            text: "100%"
+            size_hint: None, 1
+            width: 200
+            color: 0, 1, 0, 1.0
+            font_size: 36
+            font_name: "fonts/OpenSans-Bold"
+            canvas.before:
+                Color:
+                    rgba: 0.2706, 0.2824, 0.3373, 0.5
+                RoundedRectangle:
+                    pos: self.pos[0]+15,self.pos[1]+25
+                    size: self.size[0]-30,self.size[1]-50
+                    radius: [20]
 
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: 'vertical'
+            Label:
+                id: sana
+                text: "Bugun"
+                color: 0.2706, 0.2824, 0.3373, 1.0
+                font_size: 36
+                size_hint: 1, 2
+                font_name: "fonts/OpenSans-Bold"
+                text_size: self.size
+                valign: "bottom"
+            Label:
+                id: sana_data
+                text: "Jami: 100 ta hisob\nKirilgan: 100 ta hisob\nXato login yoki parol: 0 ta"
+                color: 0.2, 0.2, 0.3, 0.9
+                size_hint: 1, 3
+                font_size: 16
+                font_name: "fonts/OpenSans-Bold"
+                text_size: self.size
+                valign: "top"
+
+<HomeContent2>
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: 150
+        canvas.before:
+            Color:
+                rgba: 0.4118, 0.6039, 0.8941, 0.59
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            id: sana_foiz
+            text: "100%"
+            size_hint: None, 1
+            width: 200
+            color: 0, 1, 0, 1.0
+            font_size: 36
+            font_name: "fonts/OpenSans-Bold"
+            canvas.before:
+                Color:
+                    rgba: 0.2706, 0.2824, 0.3373, 0.5
+                RoundedRectangle:
+                    pos: self.pos[0]+15,self.pos[1]+25
+                    size: self.size[0]-30,self.size[1]-50
+                    radius: [20]
+
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: 'vertical'
+            Label:
+                id: sana
+                text: "Kecha"
+                color: 0.2706, 0.2824, 0.3373, 1.0
+                font_size: 36
+                size_hint: 1, 2
+                font_name: "fonts/OpenSans-Bold"
+                text_size: self.size
+                valign: "bottom"
+            Label:
+                id: sana_data
+                text: "Jami: 100 ta hisob\nKirilgan: 100 ta hisob\nXato login yoki parol: 0 ta"
+                color: 0.2, 0.2, 0.3, 0.9
+                size_hint: 1, 3
+                font_size: 16
+                font_name: "fonts/OpenSans-Bold"
+                text_size: self.size
+                valign: "top"
+                
+            
 <AddPopup>
     pos_hint: {"center_x": 0.5, "center_y": 0.5}
     background_color: 0,0,0,0
@@ -403,6 +502,7 @@
             hint_text: "Ism familiya"
             font_size: '18sp'
             multiline: False
+            font_name: "fonts/OpenSans-Regular"
             background_normal: ''
             background_color: 0, 0, 0, 0  # Bu erda fon shaffofligi yo'q
             padding: [10, 5]
@@ -424,6 +524,7 @@
             hint_text: "Login"
             font_size: '18sp'
             multiline: False
+            font_name: "fonts/OpenSans-Regular"
             background_normal: ''
             background_color: 0, 0, 0, 0  # Bu erda fon shaffofligi yo'q
             padding: [10, 5]
@@ -445,6 +546,7 @@
             hint_text: "Parol"
             font_size: '18sp'
             multiline: False
+            font_name: "fonts/OpenSans-Regular"
             background_normal: ''
             background_color: 0, 0, 0, 0  # Bu erda fon shaffofligi yo'q
             padding: [10, 5]
@@ -571,7 +673,6 @@
             multiline: False
             background_normal: ''
             background_color: 0, 0, 0, 0  # Bu erda fon shaffofligi yo'q
-            padding: [10, 5]
             foreground_color: 0, 0, 0, 0.9
             color: 1, 1, 1, 1
             padding: [15, 10, 15, 10]
@@ -594,7 +695,6 @@
             multiline: False
             background_normal: ''
             background_color: 0, 0, 0, 0  # Bu erda fon shaffofligi yo'q
-            padding: [10, 5]
             foreground_color: 0, 0, 0, 0.9
             color: 1, 1, 1, 1
             padding: [15, 10, 15, 10]

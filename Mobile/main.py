@@ -136,6 +136,21 @@ class DatasLoginContent2(BoxLayout):
     def edit_func(self):
         self.edit_page.open()
 
+class HomeContent1(BoxLayout):
+    def __init__(self, data, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.sana.text = data["sana"]
+        self.ids.sana_foiz.text = str(data["foiz"])
+        self.ids.sana_data.text = f'Jami: {data["all_num"]} ta hisob\nKirilgan: {int(data["all_num"]) - int(data["err_num"])} ta hisob\nXato login yoki parol: {data["err_num"]} ta'
+
+
+
+class HomeContent2(BoxLayout):
+    def __init__(self, data, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.sana.text = data["sana"]
+        self.ids.sana_foiz.text = str(data["foiz"])
+        self.ids.sana_data.text = f'Jami: {data["all_num"]} ta hisob\nKirilgan: {int(data["all_num"]) - int(data["err_num"])} ta hisob\nXato login yoki parol: {data["err_num"]} ta'
 
 
 class LoginScreen(Screen):
@@ -170,6 +185,33 @@ class HomeScreen(Screen):
     # Login qilib chiqish
     def all_logins_run(self):
         pass
+    def contents_refresh(self):
+        all_days = get_last_seven_days()
+        n=0
+        self.ids.contents_box.clear_widgets()
+        for kun in all_days:
+            kun_data = app.database.get_data(kun)
+            if kun_data is not None:
+                # malumot: sana|foiz|all_num|err_num
+                sana, foiz, all_num, err_num = map(str, kun_data.split("|"))
+                if n%2 == 0:
+                    content = HomeContent1({
+                        "foiz": foiz,
+                        "sana": sana,
+                        "all_num": all_num,
+                        "err_num": err_num
+                    })
+                else:
+                    content = HomeContent2({
+                        "foiz": foiz,
+                        "sana": sana,
+                        "all_num": all_num,
+                        "err_num": err_num
+                    })
+                self.ids.contents_box.add_widget(content)
+                n+=1
+        self.ids.contents_box.height = n*150
+
     def set_datas(self, text, rang):
         self.ids.letsenziya_label.text = text
         self.ids.letsenziya_label.color = rang
@@ -292,6 +334,7 @@ class KundalikCOMApp(App):
             else:
                 self.root.HomePage.ids.today_foiz.text = "0%"
                 self.root.HomePage.ids.today_qism.text = "0/"+str(self.database.logins_len())
+            Clock.schedule_once(lambda dt: self.root.HomePage.contents_refresh())
         except requests.ConnectionError:
             self.show_error("Internetga ulanmagansiz", "Qurilmangizni  internet tarmog'iga ulang!", "qayta urinish", b_func = self.data_population)
         except:
