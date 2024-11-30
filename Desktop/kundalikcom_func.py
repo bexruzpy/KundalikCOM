@@ -7,6 +7,7 @@ import time
 import os
 import render_capcha_image
 from urllib.parse import unquote
+import traceback
 
 def get_all_group(browser, school_id, set_users = False):
     text = browser.get(f"https://schools.emaktab.uz/v2/school?school={school_id}&view=classes")
@@ -202,6 +203,12 @@ def login_user(browser, login, password):
                 "user_id": user_id,
                 "browser": browser
             }
+        elif "Выход" in soup.get_text():
+            user_id = soup.find(title="Настройки").get("href").split("user=")[-1].strip()
+            return True, {
+                "user_id": user_id,
+                "browser": browser
+            }
         else:
             if soup.find_all(class_="message")[0].get_text().strip() == "Parol yoki login notoʻgʻri koʻrsatilgan. Qaytadan urinib koʻring.":
                 return False, "Login yoki parol xato"
@@ -223,11 +230,19 @@ def login_user(browser, login, password):
                                 "user_id": user_id,
                                 "browser": browser
                             }
-                        elif soup.find_all(class_="message")[0].get_text().strip() == "Parol yoki login notoʻgʻri koʻrsatilgan. Qaytadan urinib koʻring.":
+                        elif "Выход" in soup.get_text():
+                            user_id = soup.find(title="Настройки").get("href").split("user=")[-1].strip()
+                            return True, {
+                                "user_id": user_id,
+                                "browser": browser
+                            }
+                        elif soup.find_all(class_="message")[0].get_text().strip() == "Parol yoki login notoʻgʻri koʻrsatilgan. Qaytadan urinib koʻring." or soup.find_all(class_="message")[0].get_text().strip() == "Неправильно указан пароль или логин. Попробуйте еще раз.":
                             return False, "Login yoki parol xato"
                     except requests.exceptions.ConnectionError:
                         return False, "Internega ulanib bo'lmadi"
-                    except:
+                    except Exception as e:
+                        print(type(e).__name__)
+                        traceback.print_exc()
                         return False, "Profilaktika"
     except requests.exceptions.ConnectionError:
         return False, "Internega ulanib bo'lmadi"
@@ -237,6 +252,7 @@ def login_user(browser, login, password):
 
 
 def set_default_font(paragraph, font_name='Times New Roman', font_size=16):
+    
     for run in paragraph.runs:
         run.font.name = font_name
         run.font.size = Pt(font_size)

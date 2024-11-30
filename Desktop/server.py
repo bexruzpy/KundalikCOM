@@ -68,3 +68,22 @@ class ServerConnect(object):
 # password = input("password: ").strip()
 # server.get_login("alone", "abdeix")
 # print(server.login("alone", "abdeix", int(input("     kod: "))))
+
+
+
+
+
+
+
+
+
+
+
+# from bs4 import BeautifulSoup
+# cookies = {
+#     'Dnevnik_localization': 'ru-RU'
+# }
+
+# res = requests.post("https://login.emaktab.uz/login", json={"exceededAttempts": "False", "login": "shamsiddinova.f02198", "password": "1985Feruza"}, cookies=cookies)
+# soup = BeautifulSoup(res.content, "html.parser")
+# print(soup.get_text())

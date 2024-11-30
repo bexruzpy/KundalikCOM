@@ -22,7 +22,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
-OutputDir=C:\Users\Bexruz vlog\Desktop
+OutputDir=C:\Users\dilmu\Desktop
 OutputBaseFilename=KundalikCOM_64x
 SetupIconFile=F:\KundalikCOM\Desktop\icon.ico
 Compression=lzma
